@@ -1,0 +1,32 @@
+{
+  "name": "mockup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "babel-loader": "^6.2.4",
+    "react": "^15.0.1",
+    "path": "^0.12.7",
+    "babel-core": "^6.7.7",
+    "webpack": "^1.13.0",
+    "request": "^2.72.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.7.7",
+    "eslint": "^2.8.0",
+    "eslint-plugin-react": "^5.0.1",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "scripts": {
+    "postinstall": "npm run build",
+    "start": "node server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "dev": "webpack-dev-server --devtool source-map --progress --colors --hot --content-base client",
+    "prodbuild": "NODE_ENV=production webpack -p",
+    "startForever": "NODE_ENV=production forever start --spinSleepTime 10000 server/server.js",
+    "restartForever": "NODE_ENV=production forever restart server/server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
