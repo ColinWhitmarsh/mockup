@@ -1,0 +1,14 @@
+# logs
+logs
+*.log
+
+# Compiled Dirs
+build/
+dist/
+
+# Dependency directories
+node_modules/
+
+##Exclude webpack built files
+client/bundle.*
+
