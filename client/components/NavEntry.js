@@ -5,7 +5,7 @@ const Link = require('react-router').Link;
 
 const NavEntry = (props) => (
   <li>
-    <Link to={props.data.url}>{props.data.name}</Link>
+    <Link className="grey-text darken-2 thin" to={props.data.url}>{props.data.name}</Link>
   </li>
 );
 
