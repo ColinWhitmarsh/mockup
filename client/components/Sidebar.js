@@ -1,5 +1,5 @@
 const React = require('react');
-const MediaPreview = require('./MediaPreview');
+const Thumbnail = require('./Thumbnail');
 
 
 class Sidebar extends React.Component {
@@ -8,11 +8,11 @@ class Sidebar extends React.Component {
   }
 
   render() {
-    console.log(this.props.handleClick);
     return (
-      <div className="sidebar float-left col s2 grey lighten-4 height-90 z-depth-1">
+      <div className="sidebar col s2 grey lighten-4 z-depth-1">
       {this.props.media.map ((media, index) =>
-        <MediaPreview handleClick={this.props.handleClick} media={media} key={index} />
+        <Thumbnail media={media} key={index} 
+        handleClick={this.props.handleClick} mediaType={this.props.mediaType} />
       )}
       </div>
     );
