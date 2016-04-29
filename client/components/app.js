@@ -23,10 +23,10 @@ const App = class App extends React.Component {
   
   render () {
     return (
-    <div className='app-shell'>
+    <div className="app-shell height-100">
     <Navbar links={linkslist} />
-    <div className="row height-100 no-bottom-margin">
-      <div className="">
+    <div className="row mainview height-90">
+      <div>
         {this.props.children}
       </div>
     </div>

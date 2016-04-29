@@ -38,7 +38,7 @@ class Images extends React.Component {
   render () {
     return (
       <div>
-        <Sidebar handleClick={this.handleClick} media={images} />
+        <Sidebar handleClick={this.handleClick} media={images} mediaType={'image'}/>
         <ImageLabeler image={this.state.selected} />
       </div>
     ); 
