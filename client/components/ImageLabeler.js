@@ -11,7 +11,7 @@ class ImageLabeler extends React.Component {
   
   render () {
     return (
-      <div className="col m8 height-90 grey-text darken-2">Hello World</div>
+      <div className="col m9 height-90 grey-text darken-2">Hello World</div>
     ); 
   }
 }

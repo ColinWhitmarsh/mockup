@@ -16,7 +16,7 @@ const NavBar = class NavBar extends React.Component {
     return (
       <div className="navbar-fixed">
         <nav className="white" role="navigation">
-          <div className="nav-wrapper container col s12 m4 l8"><a id="logo-container" href="#" className="brand-logo right grey-text darken-2 thin">Company</a>
+          <div className="nav-wrapper col s10"><a id="logo-container" href="#" className="right grey-text darken-2 thin brand-logo">Company</a>
             <ul className="left hide-on-med-and-down">
               {this.props.links.map ((link, index) =>
                 <NavEntry data={link} key={index} />
