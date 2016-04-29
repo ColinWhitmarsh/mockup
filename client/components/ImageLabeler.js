@@ -11,7 +11,15 @@ class ImageLabeler extends React.Component {
   
   render () {
     return (
-      <div className="col m9 height-90 grey-text darken-2">Hello World</div>
+      <div className="row grey lighten-4">
+        <div className="col s8 grey-lighten-2">
+          <div className="frame grey-lighten-1 z-depth-1">
+            <img className="image z-depth-2" src={this.props.image}/>
+          </div>
+        </div>
+        <div className="col s4">
+        </div>
+      </div>
     ); 
   }
 }
