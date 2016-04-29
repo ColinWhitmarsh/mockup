@@ -3,13 +3,13 @@ const Navbar = require('./Navbar');
 
 const linkslist = [
   {
-    name: 'Images', url: '/images'
+    name: 'Images', url: '/'
   },
   {
-    videos: 'Videos', url: '/videos'
+    name: 'Videos', url: '/videos'
   },
   {
-    dashboard: 'Dashboard', url: '/dashboard'
+    name: 'Dashboard', url: '/dashboard'
   }
 ];
 
@@ -23,8 +23,13 @@ const App = class App extends React.Component {
   
   render () {
     return (
-    <div className='app-shell grey lighten-2'>Hello World
+    <div className='app-shell'>
     <Navbar links={linkslist} />
+    <div className="row height-100 no-bottom-margin">
+      <div className="main col-sm-10 container">
+        {this.props.children}
+      </div>
+    </div>
     </div>
     );
   }
