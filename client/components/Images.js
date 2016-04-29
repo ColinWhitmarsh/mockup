@@ -2,21 +2,44 @@ const React = require('react');
 const Sidebar = require('./Sidebar');
 const ImageLabeler = require('./ImageLabeler');
 
-class Images extends React.Component {
+const images = [
+  { source: './../assets/socialmedia1.jpg'
+  },
+  { source: './../assets/socialmedia2.jpg'
+  },
+  { source: './../assets/socialmedia3.jpg'
+  },
+  { source: './../assets/security1.jpg'
+  },
+  { source: './../assets/security2.jpg'
+  },
+  { source: './../assets/security3.jpg'
+  }
+];
 
+
+
+class Images extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      images: []
+      selected: './../assets/socialmedia1.jpg'
     };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick (image) {
+    this.setState({
+      selected: image
+    });
   }
   
   render () {
     return (
       <div>
-        <Sidebar />
-        <ImageLabeler />
+        <Sidebar handleClick={this.handleClick} media={images} />
+        <ImageLabeler image={this.state.selected} />
       </div>
     ); 
   }
