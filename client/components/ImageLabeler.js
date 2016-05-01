@@ -15,13 +15,13 @@ class ImageLabeler extends React.Component {
       tagBox: [{ top: '10px', left: '10px' }]
     };
 
-    this.toggleEditable = this.toggleEditable.bind(this);
+    this.toggleFormEditable = this.toggleFormEditable.bind(this);
     this.handleFormInputs = this.handleFormInputs.bind(this);
     this.toggleTaggingMode = this.toggleTaggingMode.bind(this);
     this.handleTagging = this.handleTagging.bind(this);
   }
   
-  toggleEditable () {
+  toggleFormEditable () {
     if (this.state.disabled) {
       this.state.disabled = !this.state.disabled;
       $('.disabled').removeAttr('disabled');
@@ -44,17 +44,44 @@ class ImageLabeler extends React.Component {
   }
 
   handleTagging (event) {
-       var offset = $('.imageWrapper').offset();
-       var relX = event.pageX - offset.left - 50;
-       var relY = event.pageY - offset.top - 50;
-       var tag = this.state.tagBox[0];
+
+      // Calculate X,Y coordinates (upper left corner) of tagBox based on user click
+      var imageWrapper = $('.imageWrapper');
+      var offset = imageWrapper.offset();
        
-       tag.left = relX;
-       tag.top = relY;
+
+      var maxX = imageWrapper.width() - 100;
+      var minX = 0;
+
+      var maxY = imageWrapper.height() - 106;
+      var minY = 0;
+
+
+      var relX = event.pageX - offset.left - 50;
+      var relY = event.pageY - offset.top - 50;
+
+      // Make sure X coordinate doesn't fall outside the image width
+      if (relX > maxX) {
+        relX = maxX;
+      } else if (relX < minX) {
+        relX = minX;
+      }
+
+      // Make sure Y coordinate doesn't fall outside the image height
+      if (relY > maxY) {
+        relY = maxY;
+      } else if (relY < minY) {
+        relY = minY;
+      }
+      
+      // Get current X,Y coordinates for tagBox and replace with new coordiantes
+      var tag = this.state.tagBox[0];
+      tag.left = relX;
+      tag.top = relY;
        
-       this.setState({
+      this.setState({
         tagBox: [tag]
-       });
+      });
   }
 
   render () {
@@ -84,10 +111,10 @@ class ImageLabeler extends React.Component {
               type="text" onChange={(event) => this.handleFormInputs(event, 'dateAdded')}/>
             </div>
             <div className="col s1">
-              <a onClick={this.toggleEditable} className="waves-effect btn-flat"><i className="material-icons">edit</i></a>
+              <a onClick={this.toggleFormEditable} className="waves-effect btn grey darken-2"><i className="material-icons white-text">edit</i></a>
             </div>
             <div className="col s1">
-              <a onClick={this.toggleTaggingMode} className="waves-effect btn blue grey darken-2">
+              <a onClick={this.toggleTaggingMode} className="waves-effect btn grey darken-2">
               {this.state.tagging ? "Done" : "Tag"}</a>
             </div>
           </div>
