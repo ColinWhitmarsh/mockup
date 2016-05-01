@@ -64,7 +64,8 @@ class ImageLabeler extends React.Component {
         <div className="frame col s12 valign center-align">
           <div className="imageWrapper">
             {this.state.tagBox.map((tagBox, index) =>
-              <TaggingBox key={index} style={tagBox} />
+              <TaggingBox key={index} style={tagBox}>
+              </TaggingBox>
              )}
             <img onClick={this.handleTagging} className="frame" src={this.props.image}
             style={this.state.tagging ? taggingMode : {}} />
