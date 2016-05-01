@@ -3,18 +3,18 @@ const Sidebar = require('./Sidebar');
 const VideoLabeler = require('./VideoLabeler');
 
 const videos = [
-  { source: 'https://www.youtube.com/embed/gFKl6GvM27U'
+  { source: 'https://www.youtube.com/embed/gFKl6GvM27U',
   },
-  { source: 'https://www.youtube.com/embed/gFKl6GvM27U'
+  { source: 'https://www.youtube.com/embed/gFKl6GvM27U',
   },
-  { source: 'https://www.youtube.com/embed/gFKl6GvM27U'
+  { source: 'https://www.youtube.com/embed/gFKl6GvM27U',
   },
-  { source: 'https://www.youtube.com/embed/gFKl6GvM27U'
+  { source: 'https://www.youtube.com/embed/gFKl6GvM27U',
   },
-  { source: 'https://www.youtube.com/embed/gFKl6GvM27U'
+  { source: 'https://www.youtube.com/embed/gFKl6GvM27U',
   },
-  { source: 'https://www.youtube.com/embed/gFKl6GvM27U'
-  }
+  { source: 'https://www.youtube.com/embed/gFKl6GvM27U',
+  },
 ];
 
 
@@ -24,27 +24,25 @@ class Videos extends React.Component {
     super(props);
 
     this.state = {
-      videos: []
+      videos: [],
     };
   }
 
-  handleClick (video) {
+  handleClick(video) {
     this.setState({
-      selected: video
+      selected: video,
     });
   }
 
 
-  render () {
+  render() {
     return (
-    <div>
-      <Sidebar handleClick={this.handleClick} media={videos} mediaType={'video'}/>
-      <VideoLabeler video={this.state.selected} />
-    </div>
+      <div>
+        <Sidebar handleClick={this.handleClick} media={videos} mediaType={'video'} />
+        <VideoLabeler video={this.state.selected} />
+      </div>
     );
   }
 }
-
-
 
 module.exports = Videos;

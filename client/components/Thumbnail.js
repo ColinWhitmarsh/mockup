@@ -1,27 +1,33 @@
 const React = require('react');
 
 class Thumbnail extends React.Component {
-  constructor(props) {
-    super(props);
+
+
+  renderImage(props) {
+    return (
+      <div className="card media" onClick={() => props.handleClick(props.media.source)}>
+        <div className="card-image">
+          <img className="z-depth-1" src={props.media.source} />
+        </div>
+      </div>
+    );
   }
 
-  render() {
-    if (this.props.mediaType === 'image') {
-      return (
-        <div className="card media" onClick={() => this.props.handleClick(this.props.media.source)}>
-          <div className="card-image">
-            <img className="z-depth-1" src={this.props.media.source}/>
-          </div>
-        </div>
-      );
+  renderVideo(props) {
+    return (
+      <div className="video-container">
+        <iframe src={props.media.source} frameborder="0" allowfullscreen></iframe>
+      </div>
+    );
+  }
+
+  render(props) {
+    if (props.mediaType === 'image') {
+      return this.renderImage(props);
     } else {
-      return (
-        <div class="video-container">
-          <iframe src={this.props.media.source} frameborder="0" allowfullscreen></iframe>
-        </div>
-      );
+      return this.renderVideo(props);
     }
   }
-};
+}
 
 module.exports = Thumbnail;
