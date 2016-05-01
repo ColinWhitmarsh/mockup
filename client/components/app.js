@@ -3,34 +3,34 @@ const Navbar = require('./Navbar');
 
 const linkslist = [
   {
-    name: 'Images', url: '/'
+    name: 'Images', url: '/',
   },
   {
-    name: 'Videos', url: '/videos'
+    name: 'Videos', url: '/videos',
   },
   {
-    name: 'Dashboard', url: '/dashboard'
-  }
+    name: 'Dashboard', url: '/dashboard',
+  },
 ];
 
-const App = class App extends React.Component {  
+const App = class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: '/'
+      route: '/',
     };
   }
-  
-  render () {
+
+  render() {
     return (
-    <div className="app-shell height-100">
-    <Navbar links={linkslist} />
-    <div className="row mainview height-90">
-      <div>
-        {this.props.children}
+      <div className="app-shell height-100">
+        <Navbar links={linkslist} />
+        <div className="row mainview height-90">
+          <div>
+            {this.props.children}
+          </div>
+        </div>
       </div>
-    </div>
-    </div>
     );
   }
 
