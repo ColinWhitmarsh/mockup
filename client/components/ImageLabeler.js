@@ -1,4 +1,5 @@
 const React = require('react');
+const TaggingBox = require('./TaggingBox');
 
 class ImageLabeler extends React.Component {
 
@@ -11,11 +12,13 @@ class ImageLabeler extends React.Component {
       dateAdded: '',
       description: '',
       tagging: false,
+      tagBox: [{ top: '10px', left: '10px' }]
     };
 
     this.toggleEditable = this.toggleEditable.bind(this);
     this.handleFormInputs = this.handleFormInputs.bind(this);
     this.toggleTaggingMode = this.toggleTaggingMode.bind(this);
+    this.handleTagging = this.handleTagging.bind(this);
   }
   
   toggleEditable () {
@@ -40,13 +43,30 @@ class ImageLabeler extends React.Component {
     });
   }
 
+  handleTagging (event) {
+       var offset = $('.imageWrapper').offset();
+       var relX = event.pageX - offset.left - 50;
+       var relY = event.pageY - offset.top - 50;
+       var tag = this.state.tagBox[0];
+       
+       tag.left = relX;
+       tag.top = relY;
+       
+       this.setState({
+        tagBox: [tag]
+       });
+  }
+
   render () {
     return (
     <div className="imageLabeler no-bottom-margin col s10">
       <div className="image-frame no-bottom-margin valign-wrapper grey darken-4 z-depth-2">
-        <div className="frame col s12">
-          <div className="frame valign center-align">
-            <img className="frame image z-depth-2" src={this.props.image}
+        <div className="frame col s12 valign center-align">
+          <div className="imageWrapper">
+            {this.state.tagBox.map((tagBox, index) =>
+              <TaggingBox key={index} style={tagBox} />
+             )}
+            <img onClick={this.handleTagging} className="frame" src={this.props.image}
             style={this.state.tagging ? taggingMode : {}} />
           </div>
         </div>
