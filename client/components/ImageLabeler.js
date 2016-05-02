@@ -1,8 +1,11 @@
 const React = require('react');
 const TaggingBox = require('./TaggingBox');
 
-class ImageLabeler extends React.Component {
+const propTypes = {
+  image: React.PropTypes.string,
+};
 
+class ImageLabeler extends React.Component {
   constructor(props) {
     super(props);
 
@@ -12,21 +15,22 @@ class ImageLabeler extends React.Component {
       dateAdded: '',
       description: '',
       tagging: false,
-      tagBox: [{ top: '10px', left: '10px' }],
+      tags: [{ top: '10px', left: '10px' }],
     };
 
     this.toggleFormEditable = this.toggleFormEditable.bind(this);
     this.handleFormInputs = this.handleFormInputs.bind(this);
     this.toggleTaggingMode = this.toggleTaggingMode.bind(this);
-    this.handleTagging = this.handleTagging.bind(this);
+    this.positionTaggingBoxOnClick = this.positionTaggingBoxOnClick.bind(this);
   }
 
   componentDidMount() {
     const taggingMode = {
       cursor: 'crosshair',
     };
-
     this.state.taggingMode = taggingMode;
+
+    $('select').material_select();
   }
 
 
@@ -52,8 +56,40 @@ class ImageLabeler extends React.Component {
     });
   }
 
-  handleTagging(event) {
-    // Calculate X,Y coordinates (upper left corner) of tagBox based on user click
+  handleTaggingInput(value) {
+    /*
+    1. loops through tags array until value is null
+    2. sets tag property to value
+      if value is null
+        pointer-events: none
+        border is bright
+      if value is NOT null
+        pointer-events: all
+        border is dull
+    */
+
+/*    let tag;
+    for (const tg of this.state.tags) {
+      if (tg.value === null) {
+        tag = tg;
+      }
+    }*/
+  }
+
+  positionTaggingBoxOnClick(event) {
+    // Get current tag or create new one if needed
+/*    let tag;
+    for (const tg of this.state.tags) {
+      if (tg.value === null) {
+        tag = tg;
+      }
+    }
+
+    if (!tag) {
+      tag = { style: { top: '', left: '', pointerEvents: 'none' }, value: '' };
+    }*/
+
+    // Calculate X,Y coordinates (upper left corner) of tags based on user click
     const $imageWrapper = $('.imageWrapper');
     const offset = $imageWrapper.offset();
 
@@ -81,13 +117,13 @@ class ImageLabeler extends React.Component {
       relY = minY;
     }
 
-    // Get current X,Y coordinates for tagBox and replace with new coordiantes
-    const tag = this.state.tagBox[0];
+    // Replace current X,Y with new coordiantes
+    const tag = this.state.tags[0];
     tag.left = relX;
     tag.top = relY;
 
     this.setState({
-      tagBox: [tag],
+      tags: [tag],
     });
   }
 
@@ -97,11 +133,11 @@ class ImageLabeler extends React.Component {
         <div className="image-frame no-bottom-margin valign-wrapper grey darken-4 z-depth-2">
           <div className="frame col s12 valign center-align">
             <div className="imageWrapper">
-              {this.state.tagBox.map((tagBox, index) =>
-                <TaggingBox key={index} style={tagBox} />
+              {this.state.tags.map((tags, index) =>
+                <TaggingBox key={index} style={tags} />
                )}
               <img
-                onClick={this.handleTagging} alt="To be tagged" className="frame"
+                onClick={this.positionTaggingBoxOnClick} alt="To be tagged" className="frame"
                 src={this.props.image} style={this.state.tagging ? this.state.taggingMode : {}}
               />
             </div>
@@ -123,12 +159,12 @@ class ImageLabeler extends React.Component {
                 />
               </div>
               <div className="col s1">
-                <a onClick={this.toggleFormEditable} className="waves-effect btn grey darken-2">
+                <a onClick={this.toggleFormEditable} className="btn grey darken-2">
                   <i className="material-icons white-text">edit</i>
                 </a>
               </div>
               <div className="col s1">
-                <a onClick={this.toggleTaggingMode} className="waves-effect btn grey darken-2">
+                <a onClick={this.toggleTaggingMode} className="btn grey darken-2">
                 {this.state.tagging ? 'Done' : 'Tag'}</a>
               </div>
             </div>
@@ -147,5 +183,7 @@ class ImageLabeler extends React.Component {
     );
   }
 }
+
+ImageLabeler.propTypes = propTypes;
 
 module.exports = ImageLabeler;
