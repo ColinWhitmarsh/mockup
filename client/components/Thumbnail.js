@@ -1,13 +1,15 @@
 const React = require('react');
 
+const propTypes = {
+  mediaType: React.PropTypes.string,
+};
+
 class Thumbnail extends React.Component {
-
-
   renderImage(props) {
     return (
       <div className="card media" onClick={() => props.handleClick(props.media.source)}>
         <div className="card-image">
-          <img className="z-depth-1" src={props.media.source} />
+          <img className="z-depth-1" alt="Thumbnail" src={props.media.source} />
         </div>
       </div>
     );
@@ -21,13 +23,15 @@ class Thumbnail extends React.Component {
     );
   }
 
-  render(props) {
-    if (props.mediaType === 'image') {
-      return this.renderImage(props);
+  render() {
+    if (this.props.mediaType === 'image') {
+      return this.renderImage(this.props);
     } else {
-      return this.renderVideo(props);
+      return this.renderVideo(this.props);
     }
   }
 }
+
+Thumbnail.propTypes = propTypes;
 
 module.exports = Thumbnail;

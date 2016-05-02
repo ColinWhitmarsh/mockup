@@ -13,6 +13,10 @@ const linkslist = [
   },
 ];
 
+const propTypes = {
+  children: React.PropTypes.node,
+};
+
 const App = class App extends React.Component {
   constructor(props) {
     super(props);
@@ -33,6 +37,8 @@ const App = class App extends React.Component {
       </div>
     );
   }
-
 };
+
+App.propTypes = propTypes;
+
 module.exports = App;

@@ -1,10 +1,12 @@
 const React = require('react');
 
-class VideoLabeler extends React.Component {
+const propTypes = {
+  video: React.PropTypes.string,
+};
 
+class VideoLabeler extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
     };
   }
@@ -14,7 +16,7 @@ class VideoLabeler extends React.Component {
       <div className="row grey lighten-4">
         <div className="col s8 grey-lighten-2">
           <div className="frame grey-lighten-1 z-depth-1">
-            <img className="image z-depth-2" src={this.props.video} />
+            <img className="image z-depth-2" alt="To be labeled" src={this.props.video} />
           </div>
         </div>
         <div className="col s4">
@@ -23,5 +25,7 @@ class VideoLabeler extends React.Component {
     );
   }
 }
+
+VideoLabeler.propTypes = propTypes;
 
 module.exports = VideoLabeler;

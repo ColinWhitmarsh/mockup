@@ -1,8 +1,11 @@
 const NavEntry = require('./NavEntry');
 const React = require('react');
 
-const NavBar = class NavBar extends React.Component {
+const propTypes = {
+  links: React.PropTypes.array,
+};
 
+const Navbar = class Navbar extends React.Component {
   componentDidMount() {
     $('.button-collapse').sideNav();
   }
@@ -18,12 +21,12 @@ const NavBar = class NavBar extends React.Component {
               <i className="nav-mobile-menu material-icons grey-text darken-2">menu</i>
             </a>
             <ul className="left hide-on-med-and-down">
-              {this.props.links.map ((link, index) =>
+              {this.props.links.map((link, index) =>
                 <NavEntry data={link} key={index} />
               )}
             </ul>
             <ul id="nav-mobile" className="side-nav">
-              {this.props.links.map ((link, index) =>
+              {this.props.links.map((link, index) =>
                 <NavEntry data={link} key={index} />
               )}
             </ul>
@@ -34,4 +37,6 @@ const NavBar = class NavBar extends React.Component {
   }
 };
 
-module.exports = NavBar;
+Navbar.propTypes = propTypes;
+
+module.exports = Navbar;
