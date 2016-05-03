@@ -60,6 +60,7 @@ const ImagesToolbar = (props) => (
             backspaceRemoves
             noResultsText={'Tag the image above'}
             menuBuffer={-20}
+            clearable={false}
           />
         </div>
       </div>
