@@ -319,6 +319,7 @@ textarea.materialize-textarea {
   vertical-align: middle;
   width: 25px;
   padding-right: 5px;
+  visibility: hidden;
 }
 .Select-arrow {
   border-color: #999 transparent transparent;

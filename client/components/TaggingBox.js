@@ -9,7 +9,8 @@ const options = [
 ];
 
 const propTypes = {
-  style: React.PropTypes.object,
+  tag: React.PropTypes.object,
+  handleTaggingInput: React.PropTypes.func,
 };
 
 class TaggingBox extends React.Component {
@@ -23,14 +24,13 @@ class TaggingBox extends React.Component {
   }
 
   onChange(value) {
-    this.setState({ value });
-    console.log('value', value);
+    this.props.handleTaggingInput(value, this.props.tag.tagID);
   }
 
   render() {
     let style = {};
-    style.top = this.props.style.top;
-    style.left = this.props.style.left;
+    style.left = this.props.tag.style.left;
+    style.top = this.props.tag.style.top;
 
     return (
       <div>
@@ -41,7 +41,7 @@ class TaggingBox extends React.Component {
           >
             <Select
               name="form-field-name"
-              value={this.state.value}
+              value={this.props.tag.value}
               options={options}
               placeholder="Select tag"
               onChange={this.onChange}

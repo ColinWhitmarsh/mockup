@@ -1,5 +1,6 @@
 const React = require('react');
 const TaggingBox = require('./TaggingBox');
+const Select = require('react-select');
 
 const propTypes = {
   image: React.PropTypes.string,
@@ -15,13 +16,15 @@ class ImageLabeler extends React.Component {
       dateAdded: '',
       description: '',
       tagging: false,
-      tags: [{ top: '10px', left: '10px' }],
+      tags: [],
     };
 
     this.toggleFormEditable = this.toggleFormEditable.bind(this);
     this.handleFormInputs = this.handleFormInputs.bind(this);
     this.toggleTaggingMode = this.toggleTaggingMode.bind(this);
     this.positionTaggingBoxOnClick = this.positionTaggingBoxOnClick.bind(this);
+    this.handleTaggingInput = this.handleTaggingInput.bind(this);
+    this.handleRemoveTags = this.handleRemoveTags.bind(this);
   }
 
   componentDidMount() {
@@ -56,38 +59,56 @@ class ImageLabeler extends React.Component {
     });
   }
 
-  handleTaggingInput(value) {
-    /*
-    1. loops through tags array until value is null
-    2. sets tag property to value
-      if value is null
-        pointer-events: none
-        border is bright
-      if value is NOT null
-        pointer-events: all
-        border is dull
-    */
-
-/*    let tag;
-    for (const tg of this.state.tags) {
-      if (tg.value === null) {
-        tag = tg;
+  handleTaggingInput(tagInput, tagID) {
+    // Loop through tags array until tag is found
+    let tag;
+    let tags = this.state.tags;
+    let index;
+    for (let i = 0; i < tags.length; i++) {
+      if (tags[i].tagID === tagID) {
+        tag = tags[i];
+        index = i;
       }
+    }
+
+    // Set tag tagInput and label
+    tag.value = tagInput.value;
+    tag.label = tagInput.label;
+
+    //   if value is NOT null, dull border and make tag inactive
+/*    if (tag.tagInput !== null) {
+      tag.style.pointerEvents = 'none';
+      tag.style.border = '25%';
+    } else {
+      tag.style.pointerEvents = 'all';
+      tag.style.border = '100%';
     }*/
+
+    tags[index] = tag;
+
+    this.setState({ tags });
   }
 
   positionTaggingBoxOnClick(event) {
     // Get current tag or create new one if needed
-/*    let tag;
-    for (const tg of this.state.tags) {
-      if (tg.value === null) {
-        tag = tg;
+    let tag;
+    let tags = this.state.tags;
+    let index;
+    for (let i = 0; i < tags.length; i++) {
+      if (tags[i].value === '') {
+        tag = tags[i];
+        index = i;
       }
     }
 
     if (!tag) {
-      tag = { style: { top: '', left: '', pointerEvents: 'none' }, value: '' };
-    }*/
+      tag = {
+        style: { top: '', left: '' },
+        value: '',
+        label: '',
+        tagID: '',
+      };
+    }
 
     // Calculate X,Y coordinates (upper left corner) of tags based on user click
     const $imageWrapper = $('.imageWrapper');
@@ -117,14 +138,21 @@ class ImageLabeler extends React.Component {
       relY = minY;
     }
 
-    // Replace current X,Y with new coordiantes
-    const tag = this.state.tags[0];
-    tag.left = relX;
-    tag.top = relY;
+    // Replace previous X,Y with new coordiantes
+    tag.style.left = relX;
+    tag.style.top = relY;
+    tag.tagID = relX + relY;
+    if (tags[index]) {
+      tags[index] = tag;
+    } else {
+      tags.push(tag);
+    }
 
-    this.setState({
-      tags: [tag],
-    });
+    this.setState({ tags });
+  }
+
+  handleRemoveTags(remainingTags) {
+    this.setState({ tags: remainingTags });
   }
 
   render() {
@@ -133,12 +161,13 @@ class ImageLabeler extends React.Component {
         <div className="image-frame no-bottom-margin valign-wrapper grey darken-4 z-depth-2">
           <div className="frame col s12 valign center-align">
             <div className="imageWrapper">
-              {this.state.tags.map((tags, index) =>
-                <TaggingBox key={index} style={tags} />
+              {this.state.tags.map((tag, index) =>
+                <TaggingBox key={index} tag={tag} handleTaggingInput={this.handleTaggingInput} />
                )}
               <img
-                onClick={this.positionTaggingBoxOnClick} alt="To be tagged" className="frame"
-                src={this.props.image} style={this.state.tagging ? this.state.taggingMode : {}}
+                onClick={this.state.tagging ? this.positionTaggingBoxOnClick : () => (null)}
+                src={this.props.image} alt="To be tagged" className="frame"
+                style={this.state.tagging ? this.state.taggingMode : {}}
               />
             </div>
           </div>
@@ -174,6 +203,19 @@ class ImageLabeler extends React.Component {
                   disabled placeholder="Description" value={this.state.description}
                   className="disabled" type="text"
                   onChange={(event) => this.handleFormInputs(event, 'description')}
+                />
+              </div>
+              <div className="col s6">
+                <Select
+                  name="form-field-name"
+                  multi={true}
+                  value={this.state.tags}
+                  options={[]}
+                  placeholder="Tags..."
+                  onChange={this.handleRemoveTags}
+                  backspaceRemoves={true}
+                  noResultsText={'Tag the image above'}
+                  menuBuffer={-20}
                 />
               </div>
             </div>
