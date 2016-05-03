@@ -1,6 +1,6 @@
 const React = require('react');
 const Sidebar = require('./Sidebar');
-const ImageLabeler = require('./ImageLabeler');
+const ImagesCanvas = require('./ImagesCanvas');
 
 const images = [
   { source: './../assets/socialmedia1.jpg',
@@ -37,7 +37,7 @@ class Images extends React.Component {
     return (
       <div>
         <Sidebar handleClick={this.handleClick} media={images} mediaType={'image'} />
-        <ImageLabeler image={this.state.selected} />
+        <ImagesCanvas image={this.state.selected} />
       </div>
     );
   }

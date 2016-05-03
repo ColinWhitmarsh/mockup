@@ -3,9 +3,9 @@ const ReactDOM = require('react-dom');
 const { Router, Route, Link, IndexRoute, hashHistory, RouterContext } = require('react-router');
 
 const App = require('./components/app');
-const Images = require('./components/Images');
-const Videos = require('./components/Videos');
-const Dashboard = require('./components/Dashboard');
+const ImagesView = require('./components/ImagesView');
+const VideosView = require('./components/VideosView');
+const Dashboard = require('./components/DashboardView');
 
 const wrapComponent = function(Component, props) {
   return React.createClass({
@@ -18,9 +18,9 @@ const wrapComponent = function(Component, props) {
 ReactDOM.render((
   <Router history={hashHistory}>
     <Route path='/' component={App}>
-      <IndexRoute component={wrapComponent(Images, {})} />
-      <Route path='videos' component={Videos} />
-      <Route path='dashboard' component={Dashboard} />
+      <IndexRoute component={wrapComponent(ImagesView, {})} />
+      <Route path='videos' component={VideosView} />
+      <Route path='dashboard' component={DashboardView} />
     </Route>
   </Router>
 ), document.getElementById('app'));

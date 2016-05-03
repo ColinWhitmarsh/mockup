@@ -1,4 +1,4 @@
-const NavEntry = require('./NavEntry');
+const NavbarEntry = require('./NavbarEntry');
 const React = require('react');
 
 const propTypes = {
@@ -22,12 +22,12 @@ const Navbar = class Navbar extends React.Component {
             </a>
             <ul className="left hide-on-med-and-down">
               {this.props.links.map((link, index) =>
-                <NavEntry data={link} key={index} />
+                <NavbarEntry data={link} key={index} />
               )}
             </ul>
             <ul id="nav-mobile" className="side-nav">
               {this.props.links.map((link, index) =>
-                <NavEntry data={link} key={index} />
+                <NavbarEntry data={link} key={index} />
               )}
             </ul>
           </div>
