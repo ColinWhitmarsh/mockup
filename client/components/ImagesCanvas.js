@@ -29,9 +29,14 @@ class ImageLabeler extends React.Component {
   }
 
   componentWillReceiveProps() {
-    // Reset tags when a new image is selected. Currently there's no data persistence
+    // Reset state when a new image is selected. Currently there's no data persistence
     const tags = [];
-    this.setState({ tags });
+    const title = '';
+    const dateAdded = '';
+    const description = '';
+    const taggingToggled = false;
+    const editFormDisabled = true;
+    this.setState({ tags, title, dateAdded, description, taggingToggled, editFormDisabled });
   }
 
   toggleFormEditable() {
@@ -174,7 +179,7 @@ class ImageLabeler extends React.Component {
           toggleFormEditable={this.toggleFormEditable}
           editFormDisabled={this.state.editFormDisabled}
           handleFormInputs={this.handleFormInputs}
-          title={this.state.tile}
+          title={this.state.title}
           description={this.state.description}
           dateAdded={this.state.dateAdded}
           toggleTaggingMode={this.toggleTaggingMode}
