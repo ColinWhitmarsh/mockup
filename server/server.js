@@ -1,11 +1,11 @@
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/../client'));
 
-var port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 console.log(`server running on port ${port} in ${process.env.NODE_ENV} mode`);
 
