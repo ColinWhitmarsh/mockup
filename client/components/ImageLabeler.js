@@ -36,6 +36,11 @@ class ImageLabeler extends React.Component {
     $('select').material_select();
   }
 
+  componentWillReceiveProps() {
+    // Reset tags when a new image is selected
+    const tags = [];
+    this.setState({ tags });
+  }
 
   toggleFormEditable() {
     if (this.state.disabled) {
@@ -72,17 +77,19 @@ class ImageLabeler extends React.Component {
     }
 
     // Set tag tagInput and label
-    tag.value = tagInput.value;
-    tag.label = tagInput.label;
-
-    //   if value is NOT null, dull border and make tag inactive
-/*    if (tag.tagInput !== null) {
-      tag.style.pointerEvents = 'none';
-      tag.style.border = '25%';
+    if (tagInput) {
+      tag.value = tagInput.value;
+      tag.label = tagInput.label;
     } else {
-      tag.style.pointerEvents = 'all';
-      tag.style.border = '100%';
-    }*/
+      tag.value = '';
+      tag.label = '';
+    }
+    //   if value is null, reset opacity to 1.0
+    if (tag.value === '') {
+      tag.tagBoxStyle.opacity = 1.0;
+    } else {
+      tag.tagBoxStyle.opacity = 0.4;
+    }
 
     tags[index] = tag;
 
@@ -103,7 +110,7 @@ class ImageLabeler extends React.Component {
 
     if (!tag) {
       tag = {
-        style: { top: '', left: '' },
+        tagBoxStyle: { top: '', left: '', opacity: 1.0 },
         value: '',
         label: '',
         tagID: '',
@@ -139,8 +146,8 @@ class ImageLabeler extends React.Component {
     }
 
     // Replace previous X,Y with new coordiantes
-    tag.style.left = relX;
-    tag.style.top = relY;
+    tag.tagBoxStyle.left = relX;
+    tag.tagBoxStyle.top = relY;
     tag.tagID = relX + relY;
     if (tags[index]) {
       tags[index] = tag;

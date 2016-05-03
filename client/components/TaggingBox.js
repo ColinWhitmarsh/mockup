@@ -29,8 +29,9 @@ class TaggingBox extends React.Component {
 
   render() {
     let style = {};
-    style.left = this.props.tag.style.left;
-    style.top = this.props.tag.style.top;
+    style.left = this.props.tag.tagBoxStyle.left;
+    style.top = this.props.tag.tagBoxStyle.top;
+    style.opacity = this.props.tag.tagBoxStyle.opacity;
 
     return (
       <div>
