@@ -1,6 +1,6 @@
 const React = require('react');
-const TaggingBox = require('./TaggingBox');
-const Select = require('react-select');
+const Tagbox = require('./ImagesTagbox');
+const ImagesToolbar = require('./ImagesToolbar');
 
 const propTypes = {
   image: React.PropTypes.string,
@@ -11,45 +11,31 @@ class ImageLabeler extends React.Component {
     super(props);
 
     this.state = {
-      disabled: true,
+      editFormDisabled: true,
       title: '',
       dateAdded: '',
       description: '',
-      tagging: false,
+      taggingToggled: false,
       tags: [],
+      taggingMode: { cursor: 'crosshair' },
     };
 
     this.toggleFormEditable = this.toggleFormEditable.bind(this);
     this.handleFormInputs = this.handleFormInputs.bind(this);
     this.toggleTaggingMode = this.toggleTaggingMode.bind(this);
-    this.positionTaggingBoxOnClick = this.positionTaggingBoxOnClick.bind(this);
+    this.positionTagboxOnClick = this.positionTagboxOnClick.bind(this);
     this.handleTaggingInput = this.handleTaggingInput.bind(this);
     this.handleRemoveTags = this.handleRemoveTags.bind(this);
   }
 
-  componentDidMount() {
-    const taggingMode = {
-      cursor: 'crosshair',
-    };
-    this.state.taggingMode = taggingMode;
-
-    $('select').material_select();
-  }
-
   componentWillReceiveProps() {
-    // Reset tags when a new image is selected
+    // Reset tags when a new image is selected. Currently there's no data persistence
     const tags = [];
     this.setState({ tags });
   }
 
   toggleFormEditable() {
-    if (this.state.disabled) {
-      this.state.disabled = !this.state.disabled;
-      $('.disabled').removeAttr('disabled');
-    } else {
-      this.state.disabled = !this.state.disabled;
-      $('.disabled').attr('disabled', true);
-    }
+    this.setState({ editFormDisabled: !this.state.editFormDisabled });
   }
 
   handleFormInputs(event, fieldToUpdate) {
@@ -60,54 +46,52 @@ class ImageLabeler extends React.Component {
 
   toggleTaggingMode() {
     this.setState({
-      tagging: !this.state.tagging,
+      taggingToggled: !this.state.taggingToggled,
     });
   }
 
   handleTaggingInput(tagInput, tagID) {
-    // Loop through tags array until tag is found
+    // Loop through tags array until matching tagID is found
+    const tags = this.state.tags;
     let tag;
-    let tags = this.state.tags;
-    let index;
-    for (let i = 0; i < tags.length; i++) {
+    let i = 0;
+    for (i; i < tags.length; i++) {
       if (tags[i].tagID === tagID) {
         tag = tags[i];
-        index = i;
+        break;
       }
     }
 
-    // Set tag tagInput and label
+    // Set tag value/label and dim opacity
     if (tagInput) {
       tag.value = tagInput.value;
       tag.label = tagInput.label;
+      tag.tagBoxStyle.opacity = 0.4;
+    // tagInput is null, user has cleared current tag value, assign to empty string, reset opacity
     } else {
       tag.value = '';
       tag.label = '';
-    }
-    //   if value is null, reset opacity to 1.0
-    if (tag.value === '') {
       tag.tagBoxStyle.opacity = 1.0;
-    } else {
-      tag.tagBoxStyle.opacity = 0.4;
     }
 
-    tags[index] = tag;
-
+    // Replace old tag
+    tags[i] = tag;
     this.setState({ tags });
   }
 
-  positionTaggingBoxOnClick(event) {
-    // Get current tag or create new one if needed
+  positionTagboxOnClick(event) {
+    // Loop through tags array until empty tag is found
+    const tags = this.state.tags;
     let tag;
-    let tags = this.state.tags;
-    let index;
-    for (let i = 0; i < tags.length; i++) {
+    let i = 0;
+    for (i; i < tags.length; i++) {
       if (tags[i].value === '') {
         tag = tags[i];
-        index = i;
+        break;
       }
     }
 
+    // If tags array is empty or no tag is found, create a new tag
     if (!tag) {
       tag = {
         tagBoxStyle: { top: '', left: '', opacity: 1.0 },
@@ -117,7 +101,7 @@ class ImageLabeler extends React.Component {
       };
     }
 
-    // Calculate X,Y coordinates (upper left corner) of tags based on user click
+    // Calculate X,Y coordinates (upper left corner) to position tagBox based on user click
     const $imageWrapper = $('.imageWrapper');
     const offset = $imageWrapper.offset();
 
@@ -126,7 +110,6 @@ class ImageLabeler extends React.Component {
 
     const maxY = $imageWrapper.height() - 106;
     const minY = 0;
-
 
     let relX = event.pageX - offset.left - 50;
     let relY = event.pageY - offset.top - 50;
@@ -145,12 +128,14 @@ class ImageLabeler extends React.Component {
       relY = minY;
     }
 
-    // Replace previous X,Y with new coordiantes
+    // Replace previous X,Y with new coordiantes and assign tagID
     tag.tagBoxStyle.left = relX;
     tag.tagBoxStyle.top = relY;
     tag.tagID = relX + relY;
-    if (tags[index]) {
-      tags[index] = tag;
+
+    // Replace old tag
+    if (tags[i]) {
+      tags[i] = tag;
     } else {
       tags.push(tag);
     }
@@ -169,65 +154,34 @@ class ImageLabeler extends React.Component {
           <div className="frame col s12 valign center-align">
             <div className="imageWrapper">
               {this.state.tags.map((tag, index) =>
-                <TaggingBox key={index} tag={tag} handleTaggingInput={this.handleTaggingInput} />
+                <Tagbox
+                  key={index}
+                  tag={tag}
+                  handleTaggingInput={this.handleTaggingInput}
+                />
                )}
               <img
-                onClick={this.state.tagging ? this.positionTaggingBoxOnClick : () => (null)}
-                src={this.props.image} alt="To be tagged" className="frame"
-                style={this.state.tagging ? this.state.taggingMode : {}}
+                onClick={this.state.taggingToggled ? this.positionTagboxOnClick : () => (null)}
+                src={this.props.image}
+                alt="To be tagged"
+                className="frame"
+                style={this.state.taggingToggled ? this.state.taggingMode : {}}
               />
             </div>
           </div>
         </div>
-        <div className="image-toolbar row no-bottom-margin grey lighten-2 z-depth-2">
-          <form className="col s12">
-            <div className="row no-bottom-margin">
-              <div className="input-field col s3">
-                <input
-                  disabled placeholder="Title" value={this.state.title} className="disabled"
-                  type="text" onChange={(event) => this.handleFormInputs(event, 'title')}
-                />
-              </div>
-              <div className="input-field col s1">
-                <input
-                  disabled placeholder="Added" value={this.state.dateAdded} className="disabled"
-                  type="text" onChange={(event) => this.handleFormInputs(event, 'dateAdded')}
-                />
-              </div>
-              <div className="col s1">
-                <a onClick={this.toggleFormEditable} className="btn grey darken-2">
-                  <i className="material-icons white-text">edit</i>
-                </a>
-              </div>
-              <div className="col s1">
-                <a onClick={this.toggleTaggingMode} className="btn grey darken-2">
-                {this.state.tagging ? 'Done' : 'Tag'}</a>
-              </div>
-            </div>
-            <div className="row no-bottom-margin">
-              <div className="input-field col s5">
-                <input
-                  disabled placeholder="Description" value={this.state.description}
-                  className="disabled" type="text"
-                  onChange={(event) => this.handleFormInputs(event, 'description')}
-                />
-              </div>
-              <div className="col s6">
-                <Select
-                  name="form-field-name"
-                  multi={true}
-                  value={this.state.tags}
-                  options={[]}
-                  placeholder="Tags..."
-                  onChange={this.handleRemoveTags}
-                  backspaceRemoves={true}
-                  noResultsText={'Tag the image above'}
-                  menuBuffer={-20}
-                />
-              </div>
-            </div>
-          </form>
-        </div>
+        <ImagesToolbar
+          toggleFormEditable={this.toggleFormEditable}
+          editFormDisabled={this.state.editFormDisabled}
+          handleFormInputs={this.handleFormInputs}
+          title={this.state.tile}
+          description={this.state.description}
+          dateAdded={this.state.dateAdded}
+          toggleTaggingMode={this.toggleTaggingMode}
+          taggingToggled={this.state.taggingToggled}
+          handleRemoveTags={this.handleRemoveTags}
+          tags={this.state.tags}
+        />
       </div>
     );
   }

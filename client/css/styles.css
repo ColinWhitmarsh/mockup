@@ -75,6 +75,15 @@ iframe {
   width: 100px;
 }
 
+.tagBox-select {
+  position: relative;
+  top: 100px;
+  z-index: 3;
+  pointer-events: all;
+  width: 150px;
+  left: -25px;
+}
+
 .no-bottom-margin {
   margin-bottom: 0px;
 }

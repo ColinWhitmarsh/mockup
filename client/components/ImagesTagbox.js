@@ -16,9 +16,6 @@ const propTypes = {
 class TaggingBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: '',
-    };
 
     this.onChange = this.onChange.bind(this);
   }
@@ -36,10 +33,7 @@ class TaggingBox extends React.Component {
     return (
       <div>
         <div className="tagBox" style={style}>
-          <div
-            style={{ position: 'relative', top: '100px', zIndex: '3',
-            pointerEvents: 'all', width: '150px', left: '-25px' }}
-          >
+          <div className="tagBox-select">
             <Select
               name="form-field-name"
               value={this.props.tag.value}

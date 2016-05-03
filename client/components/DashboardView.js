@@ -1,19 +1,18 @@
 const React = require('react');
 const d3 = require('d3');
-var timeout;
+let timeout;
 
 class Dashboard extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       stacked: true,
-      grouped: false
+      grouped: false,
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     var n = 4, // number of layers
         m = 58, // number of samples per layer
         stack = d3.layout.stack(),
@@ -123,12 +122,12 @@ class Dashboard extends React.Component {
   }
 
 
-  render () {
+  render() {
     return (
       <div className="row container">
         <form>
-          <label><input type="radio" name="mode" value="grouped" checked={this.props.grouped} onChange={this.change}/> Grouped</label>
-          <label><input type="radio" name="mode" value="stacked" checked={this.props.stacked} onChange={this.change}/> Stacked</label>
+          <label><input type="radio" name="mode" value="grouped" checked={this.props.grouped} onChange={this.change}/></label>
+          <label><input type="radio" name="mode" value="stacked" checked={this.props.stacked} onChange={this.change}/></label>
         </form>
         <div className="col s8 graph grey-lighten-2" style={{font: '10px sans-serif'}}></div>
       </div>

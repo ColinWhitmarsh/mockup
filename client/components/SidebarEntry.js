@@ -18,7 +18,7 @@ class Thumbnail extends React.Component {
   renderVideo(props) {
     return (
       <div className="video-container">
-        <iframe src={props.media.source} frameborder="0" allowfullscreen></iframe>
+        <iframe src={props.media.source} frameBorder="0" />
       </div>
     );
   }
