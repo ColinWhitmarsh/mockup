@@ -10,3 +10,4 @@ client/bundle.*
 
 # Exclude materialize
 client/css/materialize/
+client/assets/
